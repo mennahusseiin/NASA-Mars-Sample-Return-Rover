@@ -77,12 +77,14 @@ def perspect_transform(img, src, dst):
     
     return warped
 
+# function to apply color thresh to detect obstacles
 def obstacle_color_thresh(img, obs_thresh=(100, 100, 100)):
     color_select = np.zeros_like(img[:,:,0])
     obs = (img[:,:,0] > obs_thresh[0]) & (img[:,:,1] > obs_thresh[1]) & (img[:,:,2] < obs_thresh[2])
     color_select[obs] = 1
     return color_select
 
+#function to apply color thresh to detect rocks
 def rock_color_thresh(img, yellow_thresh=(100, 100, 20)):
     color_select = np.zeros_like(img[:,:,0])
     rock = (img[:,:,0] > yellow_thresh[0]) & (img[:,:,1] > yellow_thresh[1]) & (img[:,:,2] < yellow_thresh[2])
