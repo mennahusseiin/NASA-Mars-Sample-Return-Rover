@@ -109,7 +109,7 @@ def perception_step(Rover):
     # 2) Apply perspective transform
     
     warped = perspect_transform(Rover.img, source, destination)
-    rocks = perspect_transform(find_rock(Rover.img), source, destination)
+    rocks = perspect_transform(rock_color_thresh(Rover.img), source, destination)
     thresh = color_thresh(warped)
     obstacles = obstacle_color_thresh(warped)
     bird_eye_of_base = perspect_transform(base_capture, source, destination)
@@ -124,6 +124,11 @@ def perception_step(Rover):
         #          Rover.vision_image[:,:,2] = navigable terrain color-thresholded binary image
 
     # 5) Convert map image pixel values to rover-centric coords
+    
+    xpix, ypix = rover_coords(thresh)
+    oxpix, oypix = rover_coords(obstacles)
+    rxpix, rypix = rover_coords(rocks)
+    
     # 6) Convert rover-centric pixel values to world coordinates
     # 7) Update Rover worldmap (to be displayed on right side of screen)
         # Example: Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
