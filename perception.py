@@ -111,7 +111,7 @@ def perception_step(Rover):
     warped = perspect_transform(Rover.img, source, destination)
     rocks = perspect_transform(find_rock(Rover.img), source, destination)
     thresh = color_thresh(warped)
-    obstacles = find_obstacle(warped)
+    obstacles = obstacle_color_thresh(warped)
     bird_eye_of_base = perspect_transform(base_capture, source, destination)
     base_threshold = warped_thresh(bird_eye_of_base)
     
