@@ -21,7 +21,7 @@ Group project in Image Processing course (CSE374)
 
 ![8e5d0380-8f71-4d04-b428-74cb951ad68d](https://user-images.githubusercontent.com/85262722/206872971-44d033d5-293e-45af-9d55-e12f05ccb623.jpg)
 
-3- launch the code using the terminal terminal 
+3- launch the code using the terminal 
 
 ![00ecbad7-7259-4afd-8b27-b9b35cc10546](https://user-images.githubusercontent.com/85262722/206873119-35ad899f-1031-414c-892a-35e9fc502eda.jpg)
 
