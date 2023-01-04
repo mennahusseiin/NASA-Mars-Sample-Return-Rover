@@ -33,13 +33,16 @@ ground_truth = mpimg.imread('../calibration_images/map_bw.png')
 # This next line creates arrays of zeros in the red and blue channels
 # and puts the map into the green channel.  This is why the underlying 
 # map output looks green in the display image
-ground_truth_3d = np.dstack((ground_truth*0, ground_truth*255, ground_truth*0)).astype(np.float)
+ground_truth_3d = np.dstack((ground_truth*0, ground_truth*255, ground_truth*0)).astype(np.float32)
 
 # Define RoverState() class to retain rover state parameters
 class RoverState():
     def __init__(self):
         self.start_time = None # To record the start time of navigation
         self.total_time = None # To record total duration of naviagation
+        self.stuck_time= 0
+        self.last_pos=0
+        self.loop_count=0
         self.img = None # Current camera image
         self.pos = None # Current position (x, y)
         self.yaw = None # Current yaw angle
@@ -51,25 +54,27 @@ class RoverState():
         self.brake = 0 # Current brake value
         self.nav_angles = None # Angles of navigable terrain pixels
         self.nav_dists = None # Distances of navigable terrain pixels
+        self.samples_dists= None #distance to the rock
+        self.samples_angles= None #angels to rock pixels
         self.ground_truth = ground_truth_3d # Ground truth worldmap
         self.mode = 'forward' # Current mode (can be forward or stop)
-        self.throttle_set = 0.2 # Throttle setting when accelerating
+        self.throttle_set = 0.3 # Throttle setting when accelerating
         self.brake_set = 10 # Brake setting when braking
         # The stop_forward and go_forward fields below represent total count
         # of navigable terrain pixels.  This is a very crude form of knowing
         # when you can keep going and when you should stop.  Feel free to
         # get creative in adding new fields or modifying these!
-        self.stop_forward = 50 # Threshold to initiate stopping
-        self.go_forward = 500 # Threshold to go forward again
+        self.stop_forward = 100 # Threshold to initiate stopping
+        self.go_forward = 500 # 500 # Threshold to go forward again
         self.max_vel = 2 # Maximum velocity (meters/second)
         # Image output from perception step
         # Update this image to display your intermediate analysis steps
         # on screen in autonomous mode
-        self.vision_image = np.zeros((160, 320, 3), dtype=np.float) 
+        self.vision_image = np.zeros((160, 320, 3), dtype=np.float32) 
         # Worldmap
         # Update this image with the positions of navigable terrain
         # obstacles and rock samples
-        self.worldmap = np.zeros((200, 200, 3), dtype=np.float) 
+        self.worldmap = np.zeros((200, 200, 3), dtype=np.float32) 
         self.samples_pos = None # To store the actual sample positions
         self.samples_to_find = 0 # To store the initial count of samples
         self.samples_located = 0 # To store number of samples located on map
